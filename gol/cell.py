@@ -1,4 +1,10 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class Cell:
+    is_alive: bool = False
+
     def tick(self, number_of_living_neighbors: int):
         if number_of_living_neighbors == 2:
             return self
@@ -9,7 +15,8 @@ class Cell:
 
 
 class AliveCell(Cell):
-    pass
+    def __init__(self):
+        super().__init__(True)
 
 
 class DeadCell(Cell):
