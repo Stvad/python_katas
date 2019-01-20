@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import List, Dict, Type
 
@@ -12,7 +13,7 @@ reversed_representations = {v: k for k, v in representations.items()}
 
 @dataclass
 class World:
-    data: List[List[Cell]] = field(default_factory=list)
+    data: List[List[Cell]] = field(default_factory=lambda: [[]])
 
     def count_living_neighbors_for(self, coordinate: Point):
         return seq(coordinate.neighbors()).count(lambda c: self.is_alive(c))
@@ -24,6 +25,15 @@ class World:
         return self.data and \
                coordinate.y in range(len(self.data)) and \
                coordinate.x in range(len(self.data[0]))
+
+    def tick(self):
+        new_data = deepcopy(self.data)
+
+        for i in range(len(self.data)):
+            for j in range(len(self.data[0])):
+                new_data[i][j] = self.data[i][j].tick(self.count_living_neighbors_for(Point(j, i)))
+
+        self.data = new_data
 
     def __repr__(self):
         return '\n'.join([World.serialize_line(line) for line in self.data])

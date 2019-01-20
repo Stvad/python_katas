@@ -6,6 +6,10 @@ from gol.cell import AliveCell, DeadCell
 from gol.point import Point
 from gol.world import World
 
+EXAMPLE_MAP = "..*.\n" \
+              ".**.\n" \
+              ".*.."
+
 a = AliveCell()
 d = DeadCell()
 
@@ -24,5 +28,11 @@ with description("World") as self:
             expect(World.from_string(".\n*").data).to(equal([[d], [a]]))
 
         with it("should be able to do round-trip"):
-            world_map = "..*.\n.**.\n.*.."
-            expect(repr(World.from_string(world_map))).to(equal(world_map))
+            expect(repr(World.from_string(EXAMPLE_MAP))).to(equal(EXAMPLE_MAP))
+
+    with it("computes new state of the world on each tick"):
+        world = World.from_string(EXAMPLE_MAP)
+        world.tick()
+        expect(repr(world)).to(equal(".**.\n"
+                                     ".**.\n"
+                                     ".**."))
