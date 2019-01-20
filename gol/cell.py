@@ -3,14 +3,10 @@ class Cell:
         if number_of_living_neighbors == 2:
             return self
         elif number_of_living_neighbors == 3:
-            return AliveCell()
+            return AliveCell
 
-        return DeadCell()
-
-
-class AliveCell(Cell):
-    pass
+        return DeadCell
 
 
-class DeadCell(Cell):
-    pass
+AliveCell = Cell()
+DeadCell = Cell()
